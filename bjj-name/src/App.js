@@ -6,7 +6,7 @@ import axios from 'axios';
 class App extends Component {
     constructor(props) {
         super(props);
-        this.state = {value: 'First Name'};
+        this.state = {value: 'First Name', new_name: ''};
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -18,13 +18,15 @@ class App extends Component {
 
     handleSubmit(event) {
         // alert('A name was submitted: ' + this.state.value);
+        var that = this;
         event.preventDefault();
-        axios.post('http://localhost:8000/name', {
+        axios.post('http://18.221.78.77:8000/name', {
             first_name: this.state.value
         })
         .then(function (response) {
             var data = response.data;
-            alert("Your BJJ name: " + data.bjj_name);
+            that.setState({new_name: data.bjj_name});
+            console.log(that.state);
         })
         .catch(function (error) {
             console.log(error);
@@ -45,6 +47,9 @@ class App extends Component {
             </label>
             <input type="submit" value="Submit" />
         </form>
+        </p>
+        <p>
+            <strong>Your BJJ name is: {this.state.new_name}!</strong>
         </p>
       </div>
     );
